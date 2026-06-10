@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Grito del Pueblo - Radio Comunitaria</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome para íconos -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: '#b91c1c', // Rojo clásico/institucional
+                        secondary: '#facc15', // Amarillo
+                        bglight: '#f9fafb', // Gris muy claro
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f9fafb;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body class="flex flex-col min-h-screen">
+
+    <!-- Encabezado / Header -->
+    <header class="bg-brand text-white border-b-4 border-secondary">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center">
+            <div class="flex items-center gap-3 mb-4 md:mb-0">
+                <i class="fas fa-radio text-4xl"></i>
+                <div>
+                    <h1 class="text-2xl font-bold uppercase tracking-wide">El Grito del Pueblo</h1>
+                    <p class="text-sm text-yellow-200">Tu radio comunitaria</p>
+                </div>
+            </div>
+            <nav class="flex gap-6 font-semibold">
+                <a href="#" class="hover:text-secondary underline-offset-4 hover:underline">Inicio</a>
+                <a href="#programacion" class="hover:text-secondary underline-offset-4 hover:underline">Programación</a>
+                <a href="#contacto" class="hover:text-secondary underline-offset-4 hover:underline">Contacto</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main class="flex-grow">
+
+        <!-- Sección Principal (Héroe y Reproductor) -->
+        <section class="bg-white py-12 md:py-16 border-b border-gray-300 shadow-sm">
+            <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center gap-12">
+
+                <!-- Texto y Descripción -->
+                <div class="flex-1 text-center md:text-left">
+                    <span
+                        class="inline-block bg-red-100 text-red-800 font-bold px-3 py-1 rounded mb-4 text-sm border border-red-200">
+                        <i class="fas fa-circle text-red-600 text-xs mr-1 animate-pulse"></i> TRANSMITIENDO EN VIVO
+                    </span>
+                    <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                        La voz de nuestro barrio
+                    </h2>
+                    <p class="text-lg text-gray-700 mb-8 leading-relaxed">
+                        Sintoniza <strong>"El Grito del Pueblo"</strong>, el espacio donde compartimos noticias, cultura
+                        popular, música y los debates que nos importan. Una radio hecha por vecinos, para los vecinos.
+                    </p>
+                </div>
+
+                <!-- Caja del Reproductor -->
+                <div class="w-full max-w-md bg-gray-100 border border-gray-300 rounded-lg p-6 shadow-md">
+                    <div class="text-center mb-6">
+                        <div
+                            class="w-24 h-24 bg-brand text-white rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-white shadow-lg">
+                            <i class="fas fa-microphone-alt text-4xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800">Escúchanos Ahora</h3>
+                    </div>
+
+                    <div class="bg-white p-6 rounded border border-gray-300 flex justify-center shadow-inner">
+                        <!-- CÓDIGO DEL REPRODUCTOR CUSTOM -->
+                        <div class="flex flex-col items-center justify-center w-full">
+                            <audio id="audio_1" preload="none" class="hidden"></audio>
+
+                            <button id="playPauseBtn"
+                                class="bg-brand hover:bg-red-800 text-white rounded-full w-20 h-20 flex items-center justify-center transition-all shadow-md focus:outline-none mb-4 transform hover:scale-105 active:scale-95 group">
+                                <i id="playIcon"
+                                    class="fas fa-play text-3xl ml-2 group-hover:text-yellow-200 transition-colors"></i>
+                                <i id="pauseIcon"
+                                    class="fas fa-pause text-3xl hidden group-hover:text-yellow-200 transition-colors"></i>
+                            </button>
+
+                            <div class="text-center h-6 flex items-center justify-center">
+                                <p class="text-gray-600 font-medium text-sm flex items-center gap-2">
+                                    <i class="fas fa-circle text-[10px] text-gray-400" id="statusDot"></i>
+                                    <span id="statusMessage">Listo para escuchar</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Grilla de Programación -->
+        <section id="programacion" class="py-16 max-w-6xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4 border-b-4 border-brand inline-block pb-2">Grilla de
+                    Programación</h2>
+                <p class="text-gray-700 text-lg">Conoce los programas que estamos armando para nuestra comunidad.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Tarjeta de Programa 1 -->
+                <div class="bg-white border border-gray-300 rounded shadow-md overflow-hidden flex flex-col">
+                    <div class="bg-blue-100 p-6 flex justify-center border-b border-gray-300">
+                        <i class="fas fa-coffee text-5xl text-blue-800"></i>
+                    </div>
+                    <div class="p-6 flex-grow">
+                        <h3 class="text-xl font-bold mb-2 text-gray-900">Mañanas Informadas</h3>
+                        <p class="text-gray-700 mb-4 text-sm">Resumen de noticias locales, entrevistas a referentes del
+                            barrio y buena música para empezar el día con toda la energía.</p>
+                        <span
+                            class="inline-block bg-gray-200 text-gray-800 px-3 py-1 text-xs font-bold rounded border border-gray-300">Lunes
+                            a Viernes - Próximamente</span>
+                    </div>
+                </div>
+
+                <!-- Tarjeta de Programa 2 -->
+                <div class="bg-white border border-gray-300 rounded shadow-md overflow-hidden flex flex-col">
+                    <div class="bg-orange-100 p-6 flex justify-center border-b border-gray-300">
+                        <i class="fas fa-users text-5xl text-orange-800"></i>
+                    </div>
+                    <div class="p-6 flex-grow">
+                        <h3 class="text-xl font-bold mb-2 text-gray-900">Asamblea Abierta</h3>
+                        <p class="text-gray-700 mb-4 text-sm">Debates, micrófono abierto y participación comunitaria. Un
+                            espacio fundamental para que tu voz y tus ideas sean escuchadas.</p>
+                        <span
+                            class="inline-block bg-gray-200 text-gray-800 px-3 py-1 text-xs font-bold rounded border border-gray-300">Sábados
+                            - Próximamente</span>
+                    </div>
+                </div>
+
+                <!-- Tarjeta de Programa 3 -->
+                <div class="bg-white border border-gray-300 rounded shadow-md overflow-hidden flex flex-col">
+                    <div class="bg-purple-100 p-6 flex justify-center border-b border-gray-300">
+                        <i class="fas fa-guitar text-5xl text-purple-800"></i>
+                    </div>
+                    <div class="p-6 flex-grow">
+                        <h3 class="text-xl font-bold mb-2 text-gray-900">Raíces Sonoras</h3>
+                        <p class="text-gray-700 mb-4 text-sm">Folclore, rock nacional y música independiente. Difundimos
+                            el arte de nuestros músicos locales y la cultura de la región.</p>
+                        <span
+                            class="inline-block bg-gray-200 text-gray-800 px-3 py-1 text-xs font-bold rounded border border-gray-300">Domingos
+                            - Próximamente</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Pie de Página / Footer -->
+    <footer id="contacto" class="bg-gray-800 text-gray-300 py-12 border-t-4 border-brand">
+        <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+
+            <!-- Columna 1 -->
+            <div>
+                <h3 class="text-xl font-bold text-white mb-4"><i class="fas fa-broadcast-tower text-brand mr-2"></i> El
+                    Grito del Pueblo</h3>
+                <p class="text-sm mb-4 leading-relaxed">Radio comunitaria transmitiendo desde el corazón del barrio,
+                    apostando por construir una comunicación verdaderamente popular y democrática.</p>
+            </div>
+
+            <!-- Columna 2 -->
+            <div>
+                <h4 class="text-lg font-bold text-white mb-4 border-b border-gray-600 pb-2 inline-block">Contacto</h4>
+                <ul class="text-sm space-y-3 mt-2">
+                    <li><i class="fas fa-map-marker-alt w-5 text-brand"></i> Dirección del Estudio, Barrio Central</li>
+                    <li><i class="fas fa-phone w-5 text-brand"></i> (011) 4567-8900</li>
+                    <li><i class="fas fa-envelope w-5 text-brand"></i> comunicacion@elgritodelpueblo.org</li>
+                </ul>
+            </div>
+
+            <!-- Columna 3 -->
+            <div>
+                <h4 class="text-lg font-bold text-white mb-4 border-b border-gray-600 pb-2 inline-block">Nuestras Redes
+                </h4>
+                <div class="flex justify-center md:justify-start gap-3 mt-4">
+                    <a href="#" class="bg-gray-700 p-3 rounded hover:bg-brand transition-colors text-white shadow"><i
+                            class="fab fa-facebook-f w-5 h-5 flex items-center justify-center text-lg"></i></a>
+                    <a href="#" class="bg-gray-700 p-3 rounded hover:bg-brand transition-colors text-white shadow"><i
+                            class="fab fa-instagram w-5 h-5 flex items-center justify-center text-lg"></i></a>
+                    <a href="#" class="bg-gray-700 p-3 rounded hover:bg-brand transition-colors text-white shadow"><i
+                            class="fab fa-whatsapp w-5 h-5 flex items-center justify-center text-lg"></i></a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Derechos -->
+        <div class="max-w-6xl mx-auto px-4 text-center mt-10 pt-6 border-t border-gray-700 text-sm">
+            <p>&copy; 2024 Radio Comunitaria El Grito del Pueblo. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const audio = document.getElementById('audio_1');
+            const playPauseBtn = document.getElementById('playPauseBtn');
+            const playIcon = document.getElementById('playIcon');
+            const pauseIcon = document.getElementById('pauseIcon');
+            const statusMessage = document.getElementById('statusMessage');
+            const statusDot = document.getElementById('statusDot');
+
+            const originalSrc = "https://server.radiostreaming.com.ar:7301/stream";
+
+            const updateUI = (state, message) => {
+                statusMessage.textContent = message;
+
+                // Reiniciar clases
+                statusDot.className = 'fas fa-circle text-[10px]';
+
+                if (state === 'playing') {
+                    playIcon.classList.add('hidden');
+                    pauseIcon.classList.remove('hidden');
+                    statusDot.classList.add('text-green-500', 'animate-pulse');
+                    statusMessage.className = 'text-green-700 font-bold text-sm';
+                } else if (state === 'loading') {
+                    playIcon.classList.add('hidden');
+                    pauseIcon.classList.remove('hidden');
+                    statusDot.classList.add('text-yellow-500', 'animate-pulse');
+                    statusMessage.className = 'text-yellow-700 font-bold text-sm';
+                } else if (state === 'error') {
+                    playIcon.classList.remove('hidden');
+                    pauseIcon.classList.add('hidden');
+                    statusDot.classList.add('text-red-500');
+                    statusMessage.className = 'text-red-700 font-bold text-sm';
+                } else {
+                    // Pausado / Detenido
+                    playIcon.classList.remove('hidden');
+                    pauseIcon.classList.add('hidden');
+                    statusDot.classList.add('text-gray-400');
+                    statusMessage.className = 'text-gray-600 font-medium text-sm';
+                }
+            };
+
+            playPauseBtn.addEventListener('click', () => {
+                if (audio.paused) {
+                    // Si no tiene src asignado, armamos la URL con anti-caché
+                    if (!audio.getAttribute('src')) {
+                        const timestamp = new Date().getTime();
+                        audio.setAttribute('src', `${originalSrc}?t=${timestamp}`);
+                        audio.load();
+                    }
+
+                    updateUI('loading', 'Conectando a la radio...');
+
+                    audio.play().catch(e => {
+                        console.error("Error de reproducción:", e);
+                        updateUI('error', 'Transmisión offline o error de conexión');
+                    });
+                } else {
+                    // Pausar y cortar la descarga en segundo plano
+                    audio.pause();
+                    audio.removeAttribute('src');
+                    audio.load();
+                    updateUI('stopped', 'Reproducción pausada');
+                }
+            });
+
+            audio.addEventListener('playing', () => {
+                updateUI('playing', 'En vivo');
+            });
+
+            audio.addEventListener('waiting', () => {
+                updateUI('loading', 'Conectando a la radio...');
+            });
+
+            audio.addEventListener('error', (e) => {
+                console.error("Error en el stream:", e);
+                updateUI('error', 'Transmisión offline o error de conexión');
+                audio.pause();
+                audio.removeAttribute('src');
+                audio.load();
+            });
+        });
+    </script>
+</body>
+
+</html>
