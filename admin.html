@@ -65,18 +65,19 @@
                 </div>
                 <div class="p-6">
                     <form id="addProgramForm" class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                        <input type="hidden" id="editingId" value="">
-                        <div class="md:col-span-2">
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Frecuencia</label>
-                            <div class="flex items-center gap-4 mb-2">
-                                <label class="flex items-center gap-2 cursor-pointer">
-                                    <input type="radio" name="dateType" value="day" checked class="accent-brand">
-                                    <span class="text-sm">Día de la semana</span>
-                                </label>
-                                <label class="flex items-center gap-2 cursor-pointer">
-                                    <input type="radio" name="dateType" value="date" class="accent-brand">
-                                    <span class="text-sm">Fecha específica</span>
-                                </label>
+                        <div class="md:col-span-2 flex flex-col justify-end">
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">Frecuencia</label>
+                                <div class="flex items-center gap-4 mb-2">
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="radio" name="dateType" value="day" checked class="accent-brand">
+                                        <span class="text-sm">Día de la semana</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="radio" name="dateType" value="date" class="accent-brand">
+                                        <span class="text-sm">Fecha específica</span>
+                                    </label>
+                                </div>
                             </div>
                             <select id="dayInput" class="w-full border border-gray-300 p-2.5 rounded focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand bg-white" required>
                                 <option value="Lunes">Lunes</option>
@@ -89,11 +90,11 @@
                             </select>
                             <input type="date" id="dateInput" class="w-full border border-gray-300 p-2.5 rounded focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand hidden">
                         </div>
-                        <div>
+                        <div class="flex flex-col justify-end">
                             <label class="block text-sm font-bold text-gray-700 mb-2">Hora inicial</label>
                             <input type="time" id="timeInput" class="w-full border border-gray-300 p-2.5 rounded focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand" required>
                         </div>
-                        <div>
+                        <div class="flex flex-col justify-end">
                             <label class="block text-sm font-bold text-gray-700 mb-2">Hora final (Opcional)</label>
                             <input type="time" id="timeEndInput" class="w-full border border-gray-300 p-2.5 rounded focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand">
                         </div>
@@ -128,11 +129,8 @@
                             </div>
                         </div>
                         <div class="md:col-span-4 flex justify-end gap-2 mt-2">
-                            <button type="button" id="cancelEditBtn" class="bg-gray-300 text-gray-800 font-bold py-2.5 px-6 rounded hover:bg-gray-400 transition shadow hidden">
-                                Cancelar
-                            </button>
                             <button type="submit" id="submitBtn" class="bg-brand text-white font-bold py-2.5 px-6 rounded hover:bg-red-800 transition shadow flex items-center gap-2">
-                                <i class="fas fa-save"></i> <span id="submitBtnText">Guardar Programa</span>
+                                <i class="fas fa-save"></i> <span>Guardar Programa</span>
                             </button>
                         </div>
                     </form>
@@ -170,6 +168,92 @@
         </main>
     </div>
 
+    <!-- Modal Editar Programa -->
+    <div id="editModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-lg shadow-2xl w-full max-w-4xl border-t-4 border-brand transform transition-all overflow-hidden flex flex-col max-h-[90vh]">
+            <div class="bg-gray-100 border-b border-gray-200 px-6 py-4 flex justify-between items-center">
+                <h2 class="text-xl font-bold text-gray-800"><i class="fas fa-edit text-brand mr-2"></i>Editar Programa</h2>
+                <button type="button" id="closeEditModal" class="text-gray-500 hover:text-gray-800 text-2xl transition">&times;</button>
+            </div>
+            <div class="p-6 overflow-y-auto">
+                <form id="editProgramForm" class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <input type="hidden" id="edit_editingId" value="">
+                    <div class="md:col-span-2 flex flex-col justify-end">
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Frecuencia</label>
+                            <div class="flex items-center gap-4 mb-2">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" name="edit_dateType" value="day" checked class="accent-brand">
+                                    <span class="text-sm">Día de la semana</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" name="edit_dateType" value="date" class="accent-brand">
+                                    <span class="text-sm">Fecha específica</span>
+                                </label>
+                            </div>
+                        </div>
+                        <select id="edit_dayInput" class="w-full border border-gray-300 p-2.5 rounded focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand bg-white" required>
+                            <option value="Lunes">Lunes</option>
+                            <option value="Martes">Martes</option>
+                            <option value="Miércoles">Miércoles</option>
+                            <option value="Jueves">Jueves</option>
+                            <option value="Viernes">Viernes</option>
+                            <option value="Sábado">Sábado</option>
+                            <option value="Domingo">Domingo</option>
+                        </select>
+                        <input type="date" id="edit_dateInput" class="w-full border border-gray-300 p-2.5 rounded focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand hidden">
+                    </div>
+                    <div class="flex flex-col justify-end">
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Hora inicial</label>
+                        <input type="time" id="edit_timeInput" class="w-full border border-gray-300 p-2.5 rounded focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand" required>
+                    </div>
+                    <div class="flex flex-col justify-end">
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Hora final (Opcional)</label>
+                        <input type="time" id="edit_timeEndInput" class="w-full border border-gray-300 p-2.5 rounded focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Nombre del programa</label>
+                        <input type="text" id="edit_nameInput" placeholder="Ej: Mañanas Locales" class="w-full border border-gray-300 p-2.5 rounded focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand" required>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Locutor/Equipo</label>
+                        <input type="text" id="edit_announcerInput" placeholder="Ej: Juan Pérez" class="w-full border border-gray-300 p-2.5 rounded focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand" required>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Color de Tarjeta</label>
+                        <div class="flex gap-2">
+                            <label class="cursor-pointer group"><input type="radio" name="edit_colorInput" value="blue" class="hidden" checked><div class="w-8 h-8 rounded-full bg-blue-500 border-2 border-transparent group-has-[:checked]:border-gray-800 transition-all"></div></label>
+                            <label class="cursor-pointer group"><input type="radio" name="edit_colorInput" value="orange" class="hidden"><div class="w-8 h-8 rounded-full bg-orange-500 border-2 border-transparent group-has-[:checked]:border-gray-800 transition-all"></div></label>
+                            <label class="cursor-pointer group"><input type="radio" name="edit_colorInput" value="purple" class="hidden"><div class="w-8 h-8 rounded-full bg-purple-500 border-2 border-transparent group-has-[:checked]:border-gray-800 transition-all"></div></label>
+                            <label class="cursor-pointer group"><input type="radio" name="edit_colorInput" value="emerald" class="hidden"><div class="w-8 h-8 rounded-full bg-emerald-500 border-2 border-transparent group-has-[:checked]:border-gray-800 transition-all"></div></label>
+                            <label class="cursor-pointer group"><input type="radio" name="edit_colorInput" value="rose" class="hidden"><div class="w-8 h-8 rounded-full bg-rose-500 border-2 border-transparent group-has-[:checked]:border-gray-800 transition-all"></div></label>
+                            <label class="cursor-pointer group"><input type="radio" name="edit_colorInput" value="indigo" class="hidden"><div class="w-8 h-8 rounded-full bg-indigo-500 border-2 border-transparent group-has-[:checked]:border-gray-800 transition-all"></div></label>
+                        </div>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Ícono</label>
+                        <div class="flex gap-2 text-gray-500 text-xl">
+                            <label class="cursor-pointer group"><input type="radio" name="edit_iconInput" value="fa-microphone-alt" class="hidden" checked><div class="p-2 border rounded group-has-[:checked]:bg-brand group-has-[:checked]:text-white group-has-[:checked]:border-brand transition-colors"><i class="fas fa-microphone-alt"></i></div></label>
+                            <label class="cursor-pointer group"><input type="radio" name="edit_iconInput" value="fa-headphones" class="hidden"><div class="p-2 border rounded group-has-[:checked]:bg-brand group-has-[:checked]:text-white group-has-[:checked]:border-brand transition-colors"><i class="fas fa-headphones"></i></div></label>
+                            <label class="cursor-pointer group"><input type="radio" name="edit_iconInput" value="fa-users" class="hidden"><div class="p-2 border rounded group-has-[:checked]:bg-brand group-has-[:checked]:text-white group-has-[:checked]:border-brand transition-colors"><i class="fas fa-users"></i></div></label>
+                            <label class="cursor-pointer group"><input type="radio" name="edit_iconInput" value="fa-broadcast-tower" class="hidden"><div class="p-2 border rounded group-has-[:checked]:bg-brand group-has-[:checked]:text-white group-has-[:checked]:border-brand transition-colors"><i class="fas fa-broadcast-tower"></i></div></label>
+                            <label class="cursor-pointer group"><input type="radio" name="edit_iconInput" value="fa-music" class="hidden"><div class="p-2 border rounded group-has-[:checked]:bg-brand group-has-[:checked]:text-white group-has-[:checked]:border-brand transition-colors"><i class="fas fa-music"></i></div></label>
+                            <label class="cursor-pointer group"><input type="radio" name="edit_iconInput" value="fa-record-vinyl" class="hidden"><div class="p-2 border rounded group-has-[:checked]:bg-brand group-has-[:checked]:text-white group-has-[:checked]:border-brand transition-colors"><i class="fas fa-record-vinyl"></i></div></label>
+                        </div>
+                    </div>
+                    <div class="md:col-span-4 flex justify-end gap-2 mt-2 pt-4 border-t border-gray-100">
+                        <button type="button" id="cancelEditModalBtn" class="bg-gray-300 text-gray-800 font-bold py-2.5 px-6 rounded hover:bg-gray-400 transition shadow">
+                            Cancelar
+                        </button>
+                        <button type="submit" id="editSubmitBtn" class="bg-brand text-white font-bold py-2.5 px-6 rounded hover:bg-red-800 transition shadow flex items-center gap-2">
+                            <i class="fas fa-save"></i> <span>Actualizar Programa</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- Firebase SDK (Modular V10) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -201,7 +285,6 @@
         const logoutBtn = document.getElementById('logoutBtn');
         
         const addProgramForm = document.getElementById('addProgramForm');
-        const editingIdInput = document.getElementById('editingId');
         const dateTypeRadios = document.getElementsByName('dateType');
         const dayInput = document.getElementById('dayInput');
         const dateInput = document.getElementById('dateInput');
@@ -209,12 +292,24 @@
         const timeEndInput = document.getElementById('timeEndInput');
         const nameInput = document.getElementById('nameInput');
         const announcerInput = document.getElementById('announcerInput');
-        const cancelEditBtn = document.getElementById('cancelEditBtn');
-        const submitBtnText = document.getElementById('submitBtnText');
+        
+        const editModal = document.getElementById('editModal');
+        const editProgramForm = document.getElementById('editProgramForm');
+        const closeEditModalBtn = document.getElementById('closeEditModal');
+        const cancelEditModalBtn = document.getElementById('cancelEditModalBtn');
+        const edit_editingIdInput = document.getElementById('edit_editingId');
+        const edit_dateTypeRadios = document.getElementsByName('edit_dateType');
+        const edit_dayInput = document.getElementById('edit_dayInput');
+        const edit_dateInput = document.getElementById('edit_dateInput');
+        const edit_timeInput = document.getElementById('edit_timeInput');
+        const edit_timeEndInput = document.getElementById('edit_timeEndInput');
+        const edit_nameInput = document.getElementById('edit_nameInput');
+        const edit_announcerInput = document.getElementById('edit_announcerInput');
+
         const programsTableBody = document.getElementById('programsTableBody');
         const programsCount = document.getElementById('programsCount');
 
-        // Toggle Day/Date fields
+        // Toggle Day/Date fields for Add Form
         dateTypeRadios.forEach(radio => {
             radio.addEventListener('change', (e) => {
                 if (e.target.value === 'day') {
@@ -231,21 +326,31 @@
             });
         });
 
-        // Cancelar edición
-        cancelEditBtn.addEventListener('click', () => {
-            resetFormState();
+        // Toggle Day/Date fields for Edit Modal
+        edit_dateTypeRadios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                if (e.target.value === 'day') {
+                    edit_dayInput.classList.remove('hidden');
+                    edit_dateInput.classList.add('hidden');
+                    edit_dayInput.required = true;
+                    edit_dateInput.required = false;
+                } else {
+                    edit_dayInput.classList.add('hidden');
+                    edit_dateInput.classList.remove('hidden');
+                    edit_dayInput.required = false;
+                    edit_dateInput.required = true;
+                }
+            });
         });
 
-        function resetFormState() {
-            addProgramForm.reset();
-            editingIdInput.value = '';
-            submitBtnText.textContent = 'Guardar Programa';
-            cancelEditBtn.classList.add('hidden');
-            dayInput.classList.remove('hidden');
-            dateInput.classList.add('hidden');
-            dayInput.required = true;
-            dateInput.required = false;
-        }
+        // Cerrar Modal
+        const closeEditModal = () => {
+            editModal.classList.add('hidden');
+            editProgramForm.reset();
+        };
+
+        closeEditModalBtn.addEventListener('click', closeEditModal);
+        cancelEditModalBtn.addEventListener('click', closeEditModal);
 
         // Escuchar cambios de autenticación
         onAuthStateChanged(auth, (user) => {
@@ -358,30 +463,28 @@
                             timeEndInput.value = prog.timeEnd || '';
                             
                             if (prog.dateType === 'date') {
-                                document.querySelector('input[name="dateType"][value="date"]').checked = true;
-                                dayInput.classList.add('hidden');
-                                dateInput.classList.remove('hidden');
-                                dateInput.value = prog.specificDate || '';
-                                dayInput.required = false;
-                                dateInput.required = true;
+                                document.querySelector('input[name="edit_dateType"][value="date"]').checked = true;
+                                edit_dayInput.classList.add('hidden');
+                                edit_dateInput.classList.remove('hidden');
+                                edit_dateInput.value = prog.specificDate || '';
+                                edit_dayInput.required = false;
+                                edit_dateInput.required = true;
                             } else {
-                                document.querySelector('input[name="dateType"][value="day"]').checked = true;
-                                dayInput.classList.remove('hidden');
-                                dateInput.classList.add('hidden');
-                                dayInput.value = prog.day;
-                                dayInput.required = true;
-                                dateInput.required = false;
+                                document.querySelector('input[name="edit_dateType"][value="day"]').checked = true;
+                                edit_dayInput.classList.remove('hidden');
+                                edit_dateInput.classList.add('hidden');
+                                edit_dayInput.value = prog.day;
+                                edit_dayInput.required = true;
+                                edit_dateInput.required = false;
                             }
                             
-                            const colorRadio = document.querySelector(`input[name="colorInput"][value="${prog.color || 'blue'}"]`);
+                            const colorRadio = document.querySelector(`input[name="edit_colorInput"][value="${prog.color || 'blue'}"]`);
                             if (colorRadio) colorRadio.checked = true;
                             
-                            const iconRadio = document.querySelector(`input[name="iconInput"][value="${prog.icon || 'fa-microphone-alt'}"]`);
+                            const iconRadio = document.querySelector(`input[name="edit_iconInput"][value="${prog.icon || 'fa-microphone-alt'}"]`);
                             if (iconRadio) iconRadio.checked = true;
                             
-                            submitBtnText.textContent = 'Actualizar Programa';
-                            cancelEditBtn.classList.remove('hidden');
-                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                            editModal.classList.remove('hidden');
                         }
                     });
                 });
@@ -417,7 +520,6 @@
             const announcer = announcerInput.value.trim();
             const color = document.querySelector('input[name="colorInput"]:checked').value;
             const icon = document.querySelector('input[name="iconInput"]:checked').value;
-            const id = editingIdInput.value;
 
             const submitBtn = addProgramForm.querySelector('button[type="submit"]');
             const originalText = submitBtn.innerHTML;
@@ -437,15 +539,60 @@
             };
 
             try {
-                if (id) {
-                    await updateDoc(doc(db, "programacion", id), programData);
-                } else {
-                    await addDoc(collection(db, "programacion"), programData);
-                }
-                resetFormState();
+                await addDoc(collection(db, "programacion"), programData);
+                addProgramForm.reset();
+                // Reset state
+                dayInput.classList.remove('hidden');
+                dateInput.classList.add('hidden');
+                dayInput.required = true;
+                dateInput.required = false;
+                document.querySelector('input[name="dateType"][value="day"]').checked = true;
             } catch (error) {
                 console.error("Error al guardar: ", error);
                 alert("Error al guardar el programa.");
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Evento de Editar Programa
+        editProgramForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const dateType = document.querySelector('input[name="edit_dateType"]:checked').value;
+            const day = edit_dayInput.value;
+            const specificDate = edit_dateInput.value;
+            const time = edit_timeInput.value;
+            const timeEnd = edit_timeEndInput.value;
+            const name = edit_nameInput.value.trim();
+            const announcer = edit_announcerInput.value.trim();
+            const color = document.querySelector('input[name="edit_colorInput"]:checked').value;
+            const icon = document.querySelector('input[name="edit_iconInput"]:checked').value;
+            const id = edit_editingIdInput.value;
+
+            const submitBtn = editProgramForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Actualizando...';
+            submitBtn.disabled = true;
+
+            const programData = {
+                dateType,
+                day: dateType === 'day' ? day : '',
+                specificDate: dateType === 'date' ? specificDate : '',
+                time,
+                timeEnd,
+                name,
+                announcer,
+                color,
+                icon
+            };
+
+            try {
+                await updateDoc(doc(db, "programacion", id), programData);
+                closeEditModal();
+            } catch (error) {
+                console.error("Error al actualizar: ", error);
+                alert("Error al actualizar el programa.");
             } finally {
                 submitBtn.innerHTML = originalText;
                 submitBtn.disabled = false;
