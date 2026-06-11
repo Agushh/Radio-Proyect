@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Radio</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome para íconos -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: '#b91c1c',
+                        secondary: '#facc15',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100 min-h-screen font-sans text-gray-800">
+    
+    <!-- Sección A: Login Minimalista -->
+    <div id="loginSection" class="min-h-screen flex items-center justify-center bg-gray-900">
+        <div class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-sm text-center border-t-4 border-brand transform transition-all">
+            <div class="mb-6">
+                <i class="fas fa-lock text-4xl text-gray-400 mb-2"></i>
+                <h2 class="text-2xl font-bold text-gray-800">Acceso Restringido</h2>
+            </div>
+            <form id="loginForm" class="flex flex-col gap-5">
+                <div>
+                    <input type="password" id="passwordInput" placeholder="Contraseña de administrador" 
+                        class="w-full border-2 border-gray-200 p-3 rounded focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand transition-colors text-center text-lg" required>
+                </div>
+                <button type="submit" class="bg-brand text-white font-bold py-3 rounded hover:bg-red-800 transition shadow-md w-full uppercase tracking-wide">
+                    Ingresar
+                </button>
+            </form>
+            <p id="loginError" class="text-red-500 mt-4 hidden text-sm font-semibold bg-red-50 p-2 rounded border border-red-200">
+                <i class="fas fa-exclamation-circle mr-1"></i> Contraseña incorrecta
+            </p>
+        </div>
+    </div>
+
+    <!-- Sección B: CRUD Programación -->
+    <div id="crudSection" class="hidden min-h-screen bg-gray-50">
+        <!-- Navbar Administrador -->
+        <header class="bg-gray-900 text-white px-6 py-4 flex justify-between items-center shadow-md">
+            <div class="flex items-center gap-3">
+                <i class="fas fa-sliders-h text-brand text-2xl"></i>
+                <h1 class="text-xl font-bold uppercase tracking-wider">Panel de Control</h1>
+            </div>
+            <button id="logoutBtn" class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded transition font-medium flex items-center gap-2 text-sm">
+                <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+            </button>
+        </header>
+
+        <main class="max-w-6xl mx-auto p-6 md:p-8">
+            <div class="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden mb-8">
+                <div class="bg-gray-100 border-b border-gray-200 px-6 py-4">
+                    <h2 class="text-lg font-bold text-gray-800"><i class="fas fa-plus-circle text-brand mr-2"></i>Agregar Nuevo Programa</h2>
+                </div>
+                <div class="p-6">
+                    <form id="addProgramForm" class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Día</label>
+                            <select id="dayInput" class="w-full border border-gray-300 p-2.5 rounded focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand bg-white" required>
+                                <option value="Lunes">Lunes</option>
+                                <option value="Martes">Martes</option>
+                                <option value="Miércoles">Miércoles</option>
+                                <option value="Jueves">Jueves</option>
+                                <option value="Viernes">Viernes</option>
+                                <option value="Sábado">Sábado</option>
+                                <option value="Domingo">Domingo</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Hora de inicio</label>
+                            <input type="time" id="timeInput" class="w-full border border-gray-300 p-2.5 rounded focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Nombre del programa</label>
+                            <input type="text" id="nameInput" placeholder="Ej: Mañanas Locales" class="w-full border border-gray-300 p-2.5 rounded focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Locutor</label>
+                            <input type="text" id="announcerInput" placeholder="Ej: Juan Pérez" class="w-full border border-gray-300 p-2.5 rounded focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand" required>
+                        </div>
+                        <div class="md:col-span-4 flex justify-end">
+                            <button type="submit" class="bg-brand text-white font-bold py-2.5 px-6 rounded hover:bg-red-800 transition shadow flex items-center gap-2">
+                                <i class="fas fa-save"></i> Guardar Programa
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
+                <div class="bg-gray-100 border-b border-gray-200 px-6 py-4 flex justify-between items-center">
+                    <h2 class="text-lg font-bold text-gray-800"><i class="fas fa-list text-brand mr-2"></i>Programación Actual</h2>
+                    <span id="programsCount" class="bg-gray-300 text-gray-800 text-xs font-bold px-2 py-1 rounded-full">0 programas</span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-gray-50 text-gray-600 text-sm uppercase tracking-wider border-b">
+                                <th class="p-4 font-semibold">Día</th>
+                                <th class="p-4 font-semibold">Hora</th>
+                                <th class="p-4 font-semibold">Programa</th>
+                                <th class="p-4 font-semibold">Locutor</th>
+                                <th class="p-4 font-semibold text-center w-24">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="programsTableBody" class="divide-y divide-gray-200">
+                            <!-- Filas dinámicas -->
+                            <tr>
+                                <td colspan="5" class="p-8 text-center text-gray-500">
+                                    <i class="fas fa-spinner fa-spin text-2xl mb-2"></i><br>
+                                    Cargando datos...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Firebase SDK (Modular V10) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, query } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDD2IL2ED87Flpuo2SmawPX15tImj7xmRc",
+            authDomain: "elgritodelpuebloradio.firebaseapp.com",
+            projectId: "elgritodelpuebloradio",
+            storageBucket: "elgritodelpuebloradio.firebasestorage.app",
+            messagingSenderId: "992065915080",
+            appId: "1:992065915080:web:ac7492508b22b58d203dfd"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Lógica de Login Minimalista
+        const ADMIN_EMAIL = "admin@gmail.com";
+
+        const loginSection = document.getElementById('loginSection');
+        const crudSection = document.getElementById('crudSection');
+        const loginForm = document.getElementById('loginForm');
+        const passwordInput = document.getElementById('passwordInput');
+        const loginError = document.getElementById('loginError');
+        const logoutBtn = document.getElementById('logoutBtn');
+        
+        const addProgramForm = document.getElementById('addProgramForm');
+        const programsTableBody = document.getElementById('programsTableBody');
+        const programsCount = document.getElementById('programsCount');
+
+        // Escuchar cambios de autenticación
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Login exitoso
+                loginSection.classList.add('hidden');
+                crudSection.classList.remove('hidden');
+                loadPrograms();
+            } else {
+                // No autenticado
+                loginSection.classList.remove('hidden');
+                crudSection.classList.add('hidden');
+            }
+        });
+
+        // Evento de Login
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const password = passwordInput.value;
+            try {
+                // Iniciar sesión con email fijo y la contraseña provista
+                await signInWithEmailAndPassword(auth, ADMIN_EMAIL, password);
+                loginError.classList.add('hidden');
+                passwordInput.value = '';
+            } catch (error) {
+                loginError.classList.remove('hidden');
+                console.error("Error en login:", error);
+                // Reseteamos el campo de contraseña en caso de error
+                passwordInput.value = '';
+                passwordInput.focus();
+            }
+        });
+
+        // Evento de Logout
+        logoutBtn.addEventListener('click', () => {
+            signOut(auth);
+        });
+
+        // Orden de los días para la grilla
+        const daysOrder = { 'Lunes': 1, 'Martes': 2, 'Miércoles': 3, 'Jueves': 4, 'Viernes': 5, 'Sábado': 6, 'Domingo': 7 };
+
+        let unsubscribe = null;
+
+        // Cargar programas en tiempo real (CRUD)
+        function loadPrograms() {
+            if (unsubscribe) unsubscribe();
+            const q = query(collection(db, "programacion"));
+            
+            unsubscribe = onSnapshot(q, (snapshot) => {
+                let programs = [];
+                snapshot.forEach((doc) => {
+                    programs.push({ id: doc.id, ...doc.data() });
+                });
+
+                // Ordenar por día de la semana y hora
+                programs.sort((a, b) => {
+                    if (daysOrder[a.day] !== daysOrder[b.day]) {
+                        return daysOrder[a.day] - daysOrder[b.day];
+                    }
+                    return a.time.localeCompare(b.time);
+                });
+
+                programsTableBody.innerHTML = '';
+                programsCount.textContent = `${programs.length} programa${programs.length !== 1 ? 's' : ''}`;
+
+                if (programs.length === 0) {
+                    programsTableBody.innerHTML = `
+                        <tr>
+                            <td colspan="5" class="p-8 text-center text-gray-500">
+                                No hay programas registrados.
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                programs.forEach(prog => {
+                    const tr = document.createElement('tr');
+                    tr.className = 'hover:bg-gray-50 transition-colors group';
+                    tr.innerHTML = `
+                        <td class="p-4 font-medium text-gray-900 border-t border-gray-100">${prog.day}</td>
+                        <td class="p-4 text-gray-700 border-t border-gray-100"><i class="far fa-clock mr-1 text-gray-400"></i>${prog.time} hs</td>
+                        <td class="p-4 font-bold text-gray-800 border-t border-gray-100">${prog.name}</td>
+                        <td class="p-4 text-gray-700 border-t border-gray-100"><i class="far fa-user mr-1 text-gray-400"></i>${prog.announcer}</td>
+                        <td class="p-4 text-center border-t border-gray-100">
+                            <button class="text-gray-400 hover:text-red-600 transition-colors delete-btn p-2 rounded-full hover:bg-red-50" data-id="${prog.id}" title="Eliminar programa">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </td>
+                    `;
+                    programsTableBody.appendChild(tr);
+                });
+
+                // Asignar eventos de eliminación
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', async (e) => {
+                        const id = e.currentTarget.getAttribute('data-id');
+                        if (confirm('¿Estás seguro de que deseas eliminar este programa?')) {
+                            try {
+                                await deleteDoc(doc(db, "programacion", id));
+                            } catch(error) {
+                                console.error("Error al eliminar: ", error);
+                                alert("No se pudo eliminar el programa.");
+                            }
+                        }
+                    });
+                });
+            }, (error) => {
+                console.error("Error leyendo datos: ", error);
+            });
+        }
+
+        // Evento de Agregar Programa
+        addProgramForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const day = document.getElementById('dayInput').value;
+            const time = document.getElementById('timeInput').value;
+            const name = document.getElementById('nameInput').value.trim();
+            const announcer = document.getElementById('announcerInput').value.trim();
+
+            const submitBtn = addProgramForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
+            submitBtn.disabled = true;
+
+            try {
+                await addDoc(collection(db, "programacion"), {
+                    day,
+                    time,
+                    name,
+                    announcer
+                });
+                addProgramForm.reset();
+            } catch (error) {
+                console.error("Error al añadir documento: ", error);
+                alert("Error al guardar el programa.");
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -117,50 +117,11 @@
                 <p class="text-gray-700 text-lg">Conoce los programas que estamos armando para nuestra comunidad.</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Tarjeta de Programa 1 -->
-                <div class="bg-white border border-gray-300 rounded shadow-md overflow-hidden flex flex-col">
-                    <div class="bg-blue-100 p-6 flex justify-center border-b border-gray-300">
-                        <i class="fas fa-coffee text-5xl text-blue-800"></i>
-                    </div>
-                    <div class="p-6 flex-grow">
-                        <h3 class="text-xl font-bold mb-2 text-gray-900">Mañanas Informadas</h3>
-                        <p class="text-gray-700 mb-4 text-sm">Resumen de noticias locales, entrevistas a referentes del
-                            barrio y buena música para empezar el día con toda la energía.</p>
-                        <span
-                            class="inline-block bg-gray-200 text-gray-800 px-3 py-1 text-xs font-bold rounded border border-gray-300">Lunes
-                            a Viernes - Próximamente</span>
-                    </div>
-                </div>
-
-                <!-- Tarjeta de Programa 2 -->
-                <div class="bg-white border border-gray-300 rounded shadow-md overflow-hidden flex flex-col">
-                    <div class="bg-orange-100 p-6 flex justify-center border-b border-gray-300">
-                        <i class="fas fa-users text-5xl text-orange-800"></i>
-                    </div>
-                    <div class="p-6 flex-grow">
-                        <h3 class="text-xl font-bold mb-2 text-gray-900">Asamblea Abierta</h3>
-                        <p class="text-gray-700 mb-4 text-sm">Debates, micrófono abierto y participación comunitaria. Un
-                            espacio fundamental para que tu voz y tus ideas sean escuchadas.</p>
-                        <span
-                            class="inline-block bg-gray-200 text-gray-800 px-3 py-1 text-xs font-bold rounded border border-gray-300">Sábados
-                            - Próximamente</span>
-                    </div>
-                </div>
-
-                <!-- Tarjeta de Programa 3 -->
-                <div class="bg-white border border-gray-300 rounded shadow-md overflow-hidden flex flex-col">
-                    <div class="bg-purple-100 p-6 flex justify-center border-b border-gray-300">
-                        <i class="fas fa-guitar text-5xl text-purple-800"></i>
-                    </div>
-                    <div class="p-6 flex-grow">
-                        <h3 class="text-xl font-bold mb-2 text-gray-900">Raíces Sonoras</h3>
-                        <p class="text-gray-700 mb-4 text-sm">Folclore, rock nacional y música independiente. Difundimos
-                            el arte de nuestros músicos locales y la cultura de la región.</p>
-                        <span
-                            class="inline-block bg-gray-200 text-gray-800 px-3 py-1 text-xs font-bold rounded border border-gray-300">Domingos
-                            - Próximamente</span>
-                    </div>
+            <div id="programGrid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Estado de carga -->
+                <div class="col-span-full text-center text-gray-500 py-12">
+                    <i class="fas fa-spinner fa-spin text-4xl mb-4 text-brand"></i>
+                    <p class="text-lg font-medium">Cargando programación...</p>
                 </div>
             </div>
         </section>
@@ -291,6 +252,92 @@
                 audio.removeAttribute('src');
                 audio.load();
             });
+        });
+    </script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDD2IL2ED87Flpuo2SmawPX15tImj7xmRc",
+            authDomain: "elgritodelpuebloradio.firebaseapp.com",
+            projectId: "elgritodelpuebloradio",
+            storageBucket: "elgritodelpuebloradio.firebasestorage.app",
+            messagingSenderId: "992065915080",
+            appId: "1:992065915080:web:ac7492508b22b58d203dfd"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Lógica de grilla pública
+        const daysOrder = { 'Lunes': 1, 'Martes': 2, 'Miércoles': 3, 'Jueves': 4, 'Viernes': 5, 'Sábado': 6, 'Domingo': 7 };
+
+        async function loadPublicPrograms() {
+            const grid = document.getElementById('programGrid');
+            try {
+                const querySnapshot = await getDocs(collection(db, "programacion"));
+                let programs = [];
+                querySnapshot.forEach((doc) => {
+                    programs.push({ id: doc.id, ...doc.data() });
+                });
+
+                // Ordenar por día y hora
+                programs.sort((a, b) => {
+                    if (daysOrder[a.day] !== daysOrder[b.day]) {
+                        return daysOrder[a.day] - daysOrder[b.day];
+                    }
+                    return a.time.localeCompare(b.time);
+                });
+
+                grid.innerHTML = ''; // Limpiar loader
+
+                if (programs.length === 0) {
+                    grid.innerHTML = '<div class="col-span-full text-center text-gray-500 py-10">No hay programación disponible por ahora.</div>';
+                    return;
+                }
+
+                // Utilidades para variar estilos
+                const colors = ['blue', 'orange', 'purple', 'emerald', 'rose', 'indigo'];
+                const icons = ['fa-microphone-alt', 'fa-headphones', 'fa-users', 'fa-broadcast-tower', 'fa-music', 'fa-record-vinyl'];
+
+                programs.forEach((prog, index) => {
+                    const color = colors[index % colors.length];
+                    const icon = icons[index % icons.length];
+                    
+                    const card = document.createElement('div');
+                    card.className = 'bg-white border border-gray-300 rounded-lg shadow-md overflow-hidden flex flex-col transform hover:-translate-y-1 transition-all duration-300 hover:shadow-xl group';
+                    card.innerHTML = `
+                        <div class="bg-${color}-50 p-6 flex justify-center border-b border-gray-200 transition-colors group-hover:bg-${color}-100">
+                            <i class="fas ${icon} text-5xl text-${color}-600 transform group-hover:scale-110 transition-transform duration-300"></i>
+                        </div>
+                        <div class="p-6 flex-grow flex flex-col">
+                            <h3 class="text-xl font-bold mb-3 text-gray-900 border-b border-gray-100 pb-2">${prog.name}</h3>
+                            <div class="text-gray-700 mb-4 flex-grow flex flex-col justify-center space-y-2">
+                                <p class="flex items-center text-sm">
+                                    <span class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center mr-3 text-gray-500"><i class="fas fa-user"></i></span>
+                                    <span>Locución:<br><strong class="text-gray-900">${prog.announcer}</strong></span>
+                                </p>
+                            </div>
+                            <div class="mt-4 pt-4 border-t border-gray-100 text-center">
+                                <span class="inline-flex items-center justify-center bg-gray-800 text-white px-4 py-2 text-sm font-bold rounded-full w-full shadow-sm">
+                                    <i class="far fa-calendar-alt mr-2 text-secondary"></i> ${prog.day} - ${prog.time} hs
+                                </span>
+                            </div>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+
+            } catch (error) {
+                console.error("Error cargando programación:", error);
+                grid.innerHTML = '<div class="col-span-full text-center text-red-500 py-10"><i class="fas fa-exclamation-triangle text-3xl mb-2"></i><br>Error al cargar la programación.</div>';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadPublicPrograms();
         });
     </script>
 </body>
