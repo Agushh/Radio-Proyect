@@ -456,11 +456,11 @@
                         const id = e.currentTarget.getAttribute('data-id');
                         const prog = programs.find(p => p.id === id);
                         if (prog) {
-                            editingIdInput.value = id;
-                            nameInput.value = prog.name;
-                            announcerInput.value = prog.announcer;
-                            timeInput.value = prog.time;
-                            timeEndInput.value = prog.timeEnd || '';
+                            edit_editingIdInput.value = id;
+                            edit_nameInput.value = prog.name;
+                            edit_announcerInput.value = prog.announcer;
+                            edit_timeInput.value = prog.time;
+                            edit_timeEndInput.value = prog.timeEnd || '';
                             
                             if (prog.dateType === 'date') {
                                 document.querySelector('input[name="edit_dateType"][value="date"]').checked = true;
