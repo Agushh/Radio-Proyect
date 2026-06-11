@@ -65,8 +65,19 @@
                 </div>
                 <div class="p-6">
                     <form id="addProgramForm" class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Día</label>
+                        <input type="hidden" id="editingId" value="">
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Frecuencia</label>
+                            <div class="flex items-center gap-4 mb-2">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" name="dateType" value="day" checked class="accent-brand">
+                                    <span class="text-sm">Día de la semana</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" name="dateType" value="date" class="accent-brand">
+                                    <span class="text-sm">Fecha específica</span>
+                                </label>
+                            </div>
                             <select id="dayInput" class="w-full border border-gray-300 p-2.5 rounded focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand bg-white" required>
                                 <option value="Lunes">Lunes</option>
                                 <option value="Martes">Martes</option>
@@ -76,22 +87,52 @@
                                 <option value="Sábado">Sábado</option>
                                 <option value="Domingo">Domingo</option>
                             </select>
+                            <input type="date" id="dateInput" class="w-full border border-gray-300 p-2.5 rounded focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand hidden">
                         </div>
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Hora de inicio</label>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Hora inicial</label>
                             <input type="time" id="timeInput" class="w-full border border-gray-300 p-2.5 rounded focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand" required>
                         </div>
                         <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Hora final (Opcional)</label>
+                            <input type="time" id="timeEndInput" class="w-full border border-gray-300 p-2.5 rounded focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand">
+                        </div>
+                        <div class="md:col-span-2">
                             <label class="block text-sm font-bold text-gray-700 mb-2">Nombre del programa</label>
                             <input type="text" id="nameInput" placeholder="Ej: Mañanas Locales" class="w-full border border-gray-300 p-2.5 rounded focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand" required>
                         </div>
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Locutor</label>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Locutor/Equipo</label>
                             <input type="text" id="announcerInput" placeholder="Ej: Juan Pérez" class="w-full border border-gray-300 p-2.5 rounded focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand" required>
                         </div>
-                        <div class="md:col-span-4 flex justify-end">
-                            <button type="submit" class="bg-brand text-white font-bold py-2.5 px-6 rounded hover:bg-red-800 transition shadow flex items-center gap-2">
-                                <i class="fas fa-save"></i> Guardar Programa
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Color de Tarjeta</label>
+                            <div class="flex gap-2">
+                                <label class="cursor-pointer group"><input type="radio" name="colorInput" value="blue" class="hidden" checked><div class="w-8 h-8 rounded-full bg-blue-500 border-2 border-transparent group-has-[:checked]:border-gray-800 transition-all"></div></label>
+                                <label class="cursor-pointer group"><input type="radio" name="colorInput" value="orange" class="hidden"><div class="w-8 h-8 rounded-full bg-orange-500 border-2 border-transparent group-has-[:checked]:border-gray-800 transition-all"></div></label>
+                                <label class="cursor-pointer group"><input type="radio" name="colorInput" value="purple" class="hidden"><div class="w-8 h-8 rounded-full bg-purple-500 border-2 border-transparent group-has-[:checked]:border-gray-800 transition-all"></div></label>
+                                <label class="cursor-pointer group"><input type="radio" name="colorInput" value="emerald" class="hidden"><div class="w-8 h-8 rounded-full bg-emerald-500 border-2 border-transparent group-has-[:checked]:border-gray-800 transition-all"></div></label>
+                                <label class="cursor-pointer group"><input type="radio" name="colorInput" value="rose" class="hidden"><div class="w-8 h-8 rounded-full bg-rose-500 border-2 border-transparent group-has-[:checked]:border-gray-800 transition-all"></div></label>
+                                <label class="cursor-pointer group"><input type="radio" name="colorInput" value="indigo" class="hidden"><div class="w-8 h-8 rounded-full bg-indigo-500 border-2 border-transparent group-has-[:checked]:border-gray-800 transition-all"></div></label>
+                            </div>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Ícono</label>
+                            <div class="flex gap-2 text-gray-500 text-xl">
+                                <label class="cursor-pointer group"><input type="radio" name="iconInput" value="fa-microphone-alt" class="hidden" checked><div class="p-2 border rounded group-has-[:checked]:bg-brand group-has-[:checked]:text-white group-has-[:checked]:border-brand transition-colors"><i class="fas fa-microphone-alt"></i></div></label>
+                                <label class="cursor-pointer group"><input type="radio" name="iconInput" value="fa-headphones" class="hidden"><div class="p-2 border rounded group-has-[:checked]:bg-brand group-has-[:checked]:text-white group-has-[:checked]:border-brand transition-colors"><i class="fas fa-headphones"></i></div></label>
+                                <label class="cursor-pointer group"><input type="radio" name="iconInput" value="fa-users" class="hidden"><div class="p-2 border rounded group-has-[:checked]:bg-brand group-has-[:checked]:text-white group-has-[:checked]:border-brand transition-colors"><i class="fas fa-users"></i></div></label>
+                                <label class="cursor-pointer group"><input type="radio" name="iconInput" value="fa-broadcast-tower" class="hidden"><div class="p-2 border rounded group-has-[:checked]:bg-brand group-has-[:checked]:text-white group-has-[:checked]:border-brand transition-colors"><i class="fas fa-broadcast-tower"></i></div></label>
+                                <label class="cursor-pointer group"><input type="radio" name="iconInput" value="fa-music" class="hidden"><div class="p-2 border rounded group-has-[:checked]:bg-brand group-has-[:checked]:text-white group-has-[:checked]:border-brand transition-colors"><i class="fas fa-music"></i></div></label>
+                                <label class="cursor-pointer group"><input type="radio" name="iconInput" value="fa-record-vinyl" class="hidden"><div class="p-2 border rounded group-has-[:checked]:bg-brand group-has-[:checked]:text-white group-has-[:checked]:border-brand transition-colors"><i class="fas fa-record-vinyl"></i></div></label>
+                            </div>
+                        </div>
+                        <div class="md:col-span-4 flex justify-end gap-2 mt-2">
+                            <button type="button" id="cancelEditBtn" class="bg-gray-300 text-gray-800 font-bold py-2.5 px-6 rounded hover:bg-gray-400 transition shadow hidden">
+                                Cancelar
+                            </button>
+                            <button type="submit" id="submitBtn" class="bg-brand text-white font-bold py-2.5 px-6 rounded hover:bg-red-800 transition shadow flex items-center gap-2">
+                                <i class="fas fa-save"></i> <span id="submitBtnText">Guardar Programa</span>
                             </button>
                         </div>
                     </form>
@@ -110,7 +151,7 @@
                                 <th class="p-4 font-semibold">Día</th>
                                 <th class="p-4 font-semibold">Hora</th>
                                 <th class="p-4 font-semibold">Programa</th>
-                                <th class="p-4 font-semibold">Locutor</th>
+                                <th class="p-4 font-semibold">Locutor/Equipo</th>
                                 <th class="p-4 font-semibold text-center w-24">Acción</th>
                             </tr>
                         </thead>
@@ -133,7 +174,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-        import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, query } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, deleteDoc, updateDoc, doc, onSnapshot, query } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDD2IL2ED87Flpuo2SmawPX15tImj7xmRc",
@@ -160,8 +201,51 @@
         const logoutBtn = document.getElementById('logoutBtn');
         
         const addProgramForm = document.getElementById('addProgramForm');
+        const editingIdInput = document.getElementById('editingId');
+        const dateTypeRadios = document.getElementsByName('dateType');
+        const dayInput = document.getElementById('dayInput');
+        const dateInput = document.getElementById('dateInput');
+        const timeInput = document.getElementById('timeInput');
+        const timeEndInput = document.getElementById('timeEndInput');
+        const nameInput = document.getElementById('nameInput');
+        const announcerInput = document.getElementById('announcerInput');
+        const cancelEditBtn = document.getElementById('cancelEditBtn');
+        const submitBtnText = document.getElementById('submitBtnText');
         const programsTableBody = document.getElementById('programsTableBody');
         const programsCount = document.getElementById('programsCount');
+
+        // Toggle Day/Date fields
+        dateTypeRadios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                if (e.target.value === 'day') {
+                    dayInput.classList.remove('hidden');
+                    dateInput.classList.add('hidden');
+                    dayInput.required = true;
+                    dateInput.required = false;
+                } else {
+                    dayInput.classList.add('hidden');
+                    dateInput.classList.remove('hidden');
+                    dayInput.required = false;
+                    dateInput.required = true;
+                }
+            });
+        });
+
+        // Cancelar edición
+        cancelEditBtn.addEventListener('click', () => {
+            resetFormState();
+        });
+
+        function resetFormState() {
+            addProgramForm.reset();
+            editingIdInput.value = '';
+            submitBtnText.textContent = 'Guardar Programa';
+            cancelEditBtn.classList.add('hidden');
+            dayInput.classList.remove('hidden');
+            dateInput.classList.add('hidden');
+            dayInput.required = true;
+            dateInput.required = false;
+        }
 
         // Escuchar cambios de autenticación
         onAuthStateChanged(auth, (user) => {
@@ -241,18 +325,65 @@
                 programs.forEach(prog => {
                     const tr = document.createElement('tr');
                     tr.className = 'hover:bg-gray-50 transition-colors group';
+                    let displayDate = prog.dateType === 'date' ? prog.specificDate : prog.day;
+                    let displayTime = prog.timeEnd ? `${prog.time} - ${prog.timeEnd}` : prog.time;
+                    
                     tr.innerHTML = `
-                        <td class="p-4 font-medium text-gray-900 border-t border-gray-100">${prog.day}</td>
-                        <td class="p-4 text-gray-700 border-t border-gray-100"><i class="far fa-clock mr-1 text-gray-400"></i>${prog.time} hs</td>
+                        <td class="p-4 font-medium text-gray-900 border-t border-gray-100">${displayDate}</td>
+                        <td class="p-4 text-gray-700 border-t border-gray-100"><i class="far fa-clock mr-1 text-gray-400"></i>${displayTime} hs</td>
                         <td class="p-4 font-bold text-gray-800 border-t border-gray-100">${prog.name}</td>
                         <td class="p-4 text-gray-700 border-t border-gray-100"><i class="far fa-user mr-1 text-gray-400"></i>${prog.announcer}</td>
-                        <td class="p-4 text-center border-t border-gray-100">
+                        <td class="p-4 text-center border-t border-gray-100 flex justify-center gap-2">
+                            <button class="text-gray-400 hover:text-blue-600 transition-colors edit-btn p-2 rounded-full hover:bg-blue-50" data-id="${prog.id}" title="Editar programa">
+                                <i class="fas fa-edit"></i>
+                            </button>
                             <button class="text-gray-400 hover:text-red-600 transition-colors delete-btn p-2 rounded-full hover:bg-red-50" data-id="${prog.id}" title="Eliminar programa">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
                         </td>
                     `;
                     programsTableBody.appendChild(tr);
+                });
+
+                // Asignar eventos de edición
+                document.querySelectorAll('.edit-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const id = e.currentTarget.getAttribute('data-id');
+                        const prog = programs.find(p => p.id === id);
+                        if (prog) {
+                            editingIdInput.value = id;
+                            nameInput.value = prog.name;
+                            announcerInput.value = prog.announcer;
+                            timeInput.value = prog.time;
+                            timeEndInput.value = prog.timeEnd || '';
+                            
+                            if (prog.dateType === 'date') {
+                                document.querySelector('input[name="dateType"][value="date"]').checked = true;
+                                dayInput.classList.add('hidden');
+                                dateInput.classList.remove('hidden');
+                                dateInput.value = prog.specificDate || '';
+                                dayInput.required = false;
+                                dateInput.required = true;
+                            } else {
+                                document.querySelector('input[name="dateType"][value="day"]').checked = true;
+                                dayInput.classList.remove('hidden');
+                                dateInput.classList.add('hidden');
+                                dayInput.value = prog.day;
+                                dayInput.required = true;
+                                dateInput.required = false;
+                            }
+                            
+                            const colorRadio = document.querySelector(`input[name="colorInput"][value="${prog.color || 'blue'}"]`);
+                            if (colorRadio) colorRadio.checked = true;
+                            
+                            const iconRadio = document.querySelector(`input[name="iconInput"][value="${prog.icon || 'fa-microphone-alt'}"]`);
+                            if (iconRadio) iconRadio.checked = true;
+                            
+                            submitBtnText.textContent = 'Actualizar Programa';
+                            cancelEditBtn.classList.remove('hidden');
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }
+                    });
                 });
 
                 // Asignar eventos de eliminación
@@ -277,26 +408,43 @@
         // Evento de Agregar Programa
         addProgramForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const day = document.getElementById('dayInput').value;
-            const time = document.getElementById('timeInput').value;
-            const name = document.getElementById('nameInput').value.trim();
-            const announcer = document.getElementById('announcerInput').value.trim();
+            const dateType = document.querySelector('input[name="dateType"]:checked').value;
+            const day = dayInput.value;
+            const specificDate = dateInput.value;
+            const time = timeInput.value;
+            const timeEnd = timeEndInput.value;
+            const name = nameInput.value.trim();
+            const announcer = announcerInput.value.trim();
+            const color = document.querySelector('input[name="colorInput"]:checked').value;
+            const icon = document.querySelector('input[name="iconInput"]:checked').value;
+            const id = editingIdInput.value;
 
             const submitBtn = addProgramForm.querySelector('button[type="submit"]');
             const originalText = submitBtn.innerHTML;
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
             submitBtn.disabled = true;
 
+            const programData = {
+                dateType,
+                day: dateType === 'day' ? day : '',
+                specificDate: dateType === 'date' ? specificDate : '',
+                time,
+                timeEnd,
+                name,
+                announcer,
+                color,
+                icon
+            };
+
             try {
-                await addDoc(collection(db, "programacion"), {
-                    day,
-                    time,
-                    name,
-                    announcer
-                });
-                addProgramForm.reset();
+                if (id) {
+                    await updateDoc(doc(db, "programacion", id), programData);
+                } else {
+                    await addDoc(collection(db, "programacion"), programData);
+                }
+                resetFormState();
             } catch (error) {
-                console.error("Error al añadir documento: ", error);
+                console.error("Error al guardar: ", error);
                 alert("Error al guardar el programa.");
             } finally {
                 submitBtn.innerHTML = originalText;

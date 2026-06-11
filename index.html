@@ -285,8 +285,16 @@
 
                 // Ordenar por día y hora
                 programs.sort((a, b) => {
-                    if (daysOrder[a.day] !== daysOrder[b.day]) {
-                        return daysOrder[a.day] - daysOrder[b.day];
+                    const dayA = a.dateType === 'date' ? 8 : daysOrder[a.day] || 9;
+                    const dayB = b.dateType === 'date' ? 8 : daysOrder[b.day] || 9;
+                    
+                    if (dayA !== dayB) {
+                        return dayA - dayB;
+                    }
+                    if (a.dateType === 'date' && b.dateType === 'date') {
+                        if (a.specificDate !== b.specificDate) {
+                            return a.specificDate.localeCompare(b.specificDate);
+                        }
                     }
                     return a.time.localeCompare(b.time);
                 });
@@ -298,13 +306,15 @@
                     return;
                 }
 
-                // Utilidades para variar estilos
-                const colors = ['blue', 'orange', 'purple', 'emerald', 'rose', 'indigo'];
-                const icons = ['fa-microphone-alt', 'fa-headphones', 'fa-users', 'fa-broadcast-tower', 'fa-music', 'fa-record-vinyl'];
+                // Utilidades para variar estilos fallback
+                const fallbackColors = ['blue', 'orange', 'purple', 'emerald', 'rose', 'indigo'];
+                const fallbackIcons = ['fa-microphone-alt', 'fa-headphones', 'fa-users', 'fa-broadcast-tower', 'fa-music', 'fa-record-vinyl'];
 
                 programs.forEach((prog, index) => {
-                    const color = colors[index % colors.length];
-                    const icon = icons[index % icons.length];
+                    const color = prog.color || fallbackColors[index % fallbackColors.length];
+                    const icon = prog.icon || fallbackIcons[index % fallbackIcons.length];
+                    const displayDate = prog.dateType === 'date' ? prog.specificDate : prog.day;
+                    const displayTime = prog.timeEnd ? `${prog.time} - ${prog.timeEnd} hs` : `${prog.time} hs`;
                     
                     const card = document.createElement('div');
                     card.className = 'bg-white border border-gray-300 rounded-lg shadow-md overflow-hidden flex flex-col transform hover:-translate-y-1 transition-all duration-300 hover:shadow-xl group';
@@ -317,12 +327,12 @@
                             <div class="text-gray-700 mb-4 flex-grow flex flex-col justify-center space-y-2">
                                 <p class="flex items-center text-sm">
                                     <span class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center mr-3 text-gray-500"><i class="fas fa-user"></i></span>
-                                    <span>Locución:<br><strong class="text-gray-900">${prog.announcer}</strong></span>
+                                    <span>Locutor/Equipo:<br><strong class="text-gray-900">${prog.announcer}</strong></span>
                                 </p>
                             </div>
                             <div class="mt-4 pt-4 border-t border-gray-100 text-center">
                                 <span class="inline-flex items-center justify-center bg-gray-800 text-white px-4 py-2 text-sm font-bold rounded-full w-full shadow-sm">
-                                    <i class="far fa-calendar-alt mr-2 text-secondary"></i> ${prog.day} - ${prog.time} hs
+                                    <i class="far fa-calendar-alt mr-2 text-secondary"></i> ${displayDate} - ${displayTime}
                                 </span>
                             </div>
                         </div>
