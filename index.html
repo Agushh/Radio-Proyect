@@ -96,14 +96,31 @@
                                     class="fas fa-pause text-3xl hidden group-hover:text-yellow-200 transition-colors"></i>
                             </button>
 
-                            <div class="text-center h-6 flex items-center justify-center">
+                            <div class="text-center h-6 flex items-center justify-center mb-4">
                                 <p class="text-gray-600 font-medium text-sm flex items-center gap-2">
                                     <i class="fas fa-circle text-[10px] text-gray-400" id="statusDot"></i>
                                     <span id="statusMessage">Listo para escuchar</span>
                                 </p>
                             </div>
+
+                            <!-- CONTROL DE VOLUMEN -->
+                            <div class="flex items-center w-full max-w-[200px] gap-3 text-gray-500">
+                                <i class="fas fa-volume-down"></i>
+                                <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="1"
+                                    class="w-full h-1.5 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-brand">
+                                <i class="fas fa-volume-up"></i>
+                            </div>
                         </div>
                     </div>
+
+                    <!-- BOTÓN ENVIANOS UNA CANCIÓN (Controlado por Firebase) -->
+                    <div id="songRequestContainer" class="mt-6 hidden justify-center">
+                        <a id="songRequestBtn" href="#" target="_blank" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-full shadow-lg flex items-center gap-2 transition-transform transform hover:scale-105">
+                            <i class="fab fa-whatsapp text-2xl"></i>
+                            <span>¡Envianos una canción!</span>
+                        </a>
+                    </div>
+
                 </div>
 
             </div>
@@ -143,9 +160,9 @@
             <div>
                 <h4 class="text-lg font-bold text-white mb-4 border-b border-gray-600 pb-2 inline-block">Contacto</h4>
                 <ul class="text-sm space-y-3 mt-2">
-                    <li><i class="fas fa-map-marker-alt w-5 text-brand"></i> Dirección del Estudio, Barrio Central</li>
-                    <li><i class="fas fa-phone w-5 text-brand"></i> (011) 4567-8900</li>
-                    <li><i class="fas fa-envelope w-5 text-brand"></i> comunicacion@radiomicelio.org</li>
+                    <li id="footerAddressContainer"><i class="fas fa-map-marker-alt w-5 text-brand"></i> <span id="footerAddress">Dirección del Estudio, Barrio Central</span></li>
+                    <li id="footerPhoneContainer"><i class="fas fa-phone w-5 text-brand"></i> <span id="footerPhone">(011) 4567-8900</span></li>
+                    <li id="footerEmailContainer"><i class="fas fa-envelope w-5 text-brand"></i> <span id="footerEmail">comunicacion@radiomicelio.org</span></li>
                 </ul>
             </div>
 
@@ -154,11 +171,11 @@
                 <h4 class="text-lg font-bold text-white mb-4 border-b border-gray-600 pb-2 inline-block">Nuestras Redes
                 </h4>
                 <div class="flex justify-center md:justify-start gap-3 mt-4">
-                    <a href="#" class="bg-gray-700 p-3 rounded hover:bg-brand transition-colors text-white shadow"><i
+                    <a id="footerFacebook" href="#" target="_blank" class="bg-gray-700 p-3 rounded hover:bg-brand transition-colors text-white shadow hidden"><i
                             class="fab fa-facebook-f w-5 h-5 flex items-center justify-center text-lg"></i></a>
-                    <a href="#" class="bg-gray-700 p-3 rounded hover:bg-brand transition-colors text-white shadow"><i
+                    <a id="footerInstagram" href="#" target="_blank" class="bg-gray-700 p-3 rounded hover:bg-brand transition-colors text-white shadow hidden"><i
                             class="fab fa-instagram w-5 h-5 flex items-center justify-center text-lg"></i></a>
-                    <a href="#" class="bg-gray-700 p-3 rounded hover:bg-brand transition-colors text-white shadow"><i
+                    <a id="footerWhatsapp" href="#" target="_blank" class="bg-gray-700 p-3 rounded hover:bg-brand transition-colors text-white shadow hidden"><i
                             class="fab fa-whatsapp w-5 h-5 flex items-center justify-center text-lg"></i></a>
                 </div>
             </div>
@@ -179,8 +196,17 @@
             const pauseIcon = document.getElementById('pauseIcon');
             const statusMessage = document.getElementById('statusMessage');
             const statusDot = document.getElementById('statusDot');
+            const volumeControl = document.getElementById('volumeControl');
 
-            const originalSrc = "https://server.radiostreaming.com.ar:7301/stream";
+            const originalSrc = "https://streaming3.locucionar.com/proxy/radiomicelio?mp=/stream";
+
+            // Add volume listener
+            volumeControl.addEventListener('input', (e) => {
+                audio.volume = e.target.value;
+            });
+
+            // Set initial volume
+            audio.volume = volumeControl.value;
 
             const updateUI = (state, message) => {
                 statusMessage.textContent = message;
@@ -255,7 +281,7 @@
     </script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDD2IL2ED87Flpuo2SmawPX15tImj7xmRc",
@@ -366,8 +392,74 @@
             }
         }
 
+        async function loadContactSettings() {
+            try {
+                const contactDoc = await getDoc(doc(db, "settings", "contact"));
+                if (contactDoc.exists()) {
+                    const data = contactDoc.data();
+                    
+                    // Song Request Button
+                    const songRequestContainer = document.getElementById('songRequestContainer');
+                    const songRequestBtn = document.getElementById('songRequestBtn');
+                    if (data.songRequest && data.songRequest.active && data.songRequest.value) {
+                        songRequestBtn.href = `https://wa.me/${data.songRequest.value}`;
+                        songRequestContainer.classList.remove('hidden');
+                        songRequestContainer.classList.add('flex');
+                    } else {
+                        songRequestContainer.classList.add('hidden');
+                        songRequestContainer.classList.remove('flex');
+                    }
+
+                    // Address
+                    const fAddressCont = document.getElementById('footerAddressContainer');
+                    if (data.address && data.address.active) {
+                        document.getElementById('footerAddress').textContent = data.address.value;
+                        fAddressCont.classList.remove('hidden');
+                    } else { fAddressCont.classList.add('hidden'); }
+
+                    // Phone
+                    const fPhoneCont = document.getElementById('footerPhoneContainer');
+                    if (data.phone && data.phone.active) {
+                        document.getElementById('footerPhone').textContent = data.phone.value;
+                        fPhoneCont.classList.remove('hidden');
+                    } else { fPhoneCont.classList.add('hidden'); }
+
+                    // Email
+                    const fEmailCont = document.getElementById('footerEmailContainer');
+                    if (data.email && data.email.active) {
+                        document.getElementById('footerEmail').textContent = data.email.value;
+                        fEmailCont.classList.remove('hidden');
+                    } else { fEmailCont.classList.add('hidden'); }
+
+                    // Facebook
+                    const fFacebook = document.getElementById('footerFacebook');
+                    if (data.facebook && data.facebook.active && data.facebook.value) {
+                        fFacebook.href = data.facebook.value;
+                        fFacebook.classList.remove('hidden');
+                    } else { fFacebook.classList.add('hidden'); }
+
+                    // Instagram
+                    const fInstagram = document.getElementById('footerInstagram');
+                    if (data.instagram && data.instagram.active && data.instagram.value) {
+                        fInstagram.href = data.instagram.value;
+                        fInstagram.classList.remove('hidden');
+                    } else { fInstagram.classList.add('hidden'); }
+
+                    // Whatsapp
+                    const fWhatsapp = document.getElementById('footerWhatsapp');
+                    if (data.whatsapp && data.whatsapp.active && data.whatsapp.value) {
+                        fWhatsapp.href = data.whatsapp.value;
+                        fWhatsapp.classList.remove('hidden');
+                    } else { fWhatsapp.classList.add('hidden'); }
+                }
+            } catch (error) {
+                console.error("Error cargando configuración de contacto:", error);
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             loadPublicPrograms();
+            loadContactSettings();
         });
     </script>
 </body>

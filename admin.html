@@ -58,7 +58,15 @@
             </button>
         </header>
 
+        <!-- Tabs Administrador -->
+        <div class="bg-gray-800 text-white px-6 py-0 flex gap-4 shadow-md">
+            <button id="tabProgramacionBtn" class="px-4 py-3 border-b-2 border-brand font-bold text-white transition-colors">Programación</button>
+            <button id="tabContactoBtn" class="px-4 py-3 border-b-2 border-transparent font-medium text-gray-400 hover:text-white transition-colors">Contacto y Redes</button>
+        </div>
+
         <main class="max-w-6xl mx-auto p-6 md:p-8">
+            <!-- PESTAÑA PROGRAMACION -->
+            <div id="tabProgramacion">
             <div class="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden mb-8">
                 <div class="bg-gray-100 border-b border-gray-200 px-6 py-4">
                     <h2 class="text-lg font-bold text-gray-800"><i class="fas fa-plus-circle text-brand mr-2"></i>Agregar Nuevo Programa</h2>
@@ -165,6 +173,99 @@
                     </table>
                 </div>
             </div>
+            </div> <!-- End Pestaña Programacion -->
+
+            <!-- PESTAÑA CONTACTO -->
+            <div id="tabContacto" class="hidden">
+                <div class="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden mb-8">
+                    <div class="bg-gray-100 border-b border-gray-200 px-6 py-4 flex justify-between items-center">
+                        <h2 class="text-lg font-bold text-gray-800"><i class="fas fa-address-book text-brand mr-2"></i>Gestión de Contacto y Redes</h2>
+                    </div>
+                    <div class="p-6">
+                        <form id="contactForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            
+                            <!-- WhatsApp Envianos una Canción -->
+                            <div class="md:col-span-2 bg-gray-50 p-4 border border-gray-200 rounded-lg">
+                                <h3 class="font-bold text-gray-700 mb-4 border-b border-gray-200 pb-2"><i class="fab fa-whatsapp text-green-500 mr-2 text-xl"></i>Botón "¡Envianos una Canción!"</h3>
+                                <div class="flex items-center gap-4">
+                                    <label class="flex items-center gap-2 cursor-pointer w-48">
+                                        <input type="checkbox" id="songRequestActive" class="w-5 h-5 accent-brand" checked>
+                                        <span class="text-sm font-bold text-gray-700">Mostrar botón</span>
+                                    </label>
+                                    <div class="flex-grow">
+                                        <input type="text" id="songRequestInput" placeholder="Número (ej. 5491145678900)" class="w-full border border-gray-300 p-2.5 rounded focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand">
+                                        <p class="text-xs text-gray-500 mt-1">Ingresa el número con el código de país (sin el +)</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Datos de Contacto -->
+                            <div class="flex flex-col gap-3">
+                                <h3 class="font-bold text-gray-700 border-b border-gray-200 pb-2"><i class="fas fa-info-circle mr-2"></i>Datos (Pie de página)</h3>
+                                
+                                <div class="flex items-center gap-3">
+                                    <input type="checkbox" id="addressActive" class="w-5 h-5 accent-brand" checked title="Mostrar/Ocultar">
+                                    <div class="relative flex-grow">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400"><i class="fas fa-map-marker-alt"></i></div>
+                                        <input type="text" id="addressInput" placeholder="Dirección del Estudio..." class="w-full pl-10 border border-gray-300 p-2.5 rounded focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand">
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center gap-3">
+                                    <input type="checkbox" id="phoneActive" class="w-5 h-5 accent-brand" checked title="Mostrar/Ocultar">
+                                    <div class="relative flex-grow">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400"><i class="fas fa-phone"></i></div>
+                                        <input type="text" id="phoneInput" placeholder="Teléfono..." class="w-full pl-10 border border-gray-300 p-2.5 rounded focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand">
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center gap-3">
+                                    <input type="checkbox" id="emailActive" class="w-5 h-5 accent-brand" checked title="Mostrar/Ocultar">
+                                    <div class="relative flex-grow">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400"><i class="fas fa-envelope"></i></div>
+                                        <input type="email" id="emailInput" placeholder="Correo electrónico..." class="w-full pl-10 border border-gray-300 p-2.5 rounded focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Redes Sociales -->
+                            <div class="flex flex-col gap-3">
+                                <h3 class="font-bold text-gray-700 border-b border-gray-200 pb-2"><i class="fas fa-hashtag mr-2"></i>Redes Sociales (Pie de página)</h3>
+                                
+                                <div class="flex items-center gap-3">
+                                    <input type="checkbox" id="facebookActive" class="w-5 h-5 accent-brand" checked title="Mostrar/Ocultar">
+                                    <div class="relative flex-grow">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400"><i class="fab fa-facebook-f"></i></div>
+                                        <input type="url" id="facebookInput" placeholder="Link de Facebook..." class="w-full pl-10 border border-gray-300 p-2.5 rounded focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand">
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center gap-3">
+                                    <input type="checkbox" id="instagramActive" class="w-5 h-5 accent-brand" checked title="Mostrar/Ocultar">
+                                    <div class="relative flex-grow">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400"><i class="fab fa-instagram"></i></div>
+                                        <input type="url" id="instagramInput" placeholder="Link de Instagram..." class="w-full pl-10 border border-gray-300 p-2.5 rounded focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand">
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center gap-3">
+                                    <input type="checkbox" id="whatsappActive" class="w-5 h-5 accent-brand" checked title="Mostrar/Ocultar">
+                                    <div class="relative flex-grow">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400"><i class="fab fa-whatsapp"></i></div>
+                                        <input type="url" id="whatsappInput" placeholder="Link de WhatsApp..." class="w-full pl-10 border border-gray-300 p-2.5 rounded focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="md:col-span-2 flex justify-end mt-4 pt-4 border-t border-gray-200">
+                                <button type="submit" id="contactSubmitBtn" class="bg-brand text-white font-bold py-2.5 px-6 rounded hover:bg-red-800 transition shadow flex items-center gap-2">
+                                    <i class="fas fa-save"></i> <span>Guardar Contacto</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div> <!-- End Pestaña Contacto -->
         </main>
     </div>
 
@@ -258,7 +359,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-        import { getFirestore, collection, addDoc, deleteDoc, updateDoc, doc, onSnapshot, query } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, deleteDoc, updateDoc, doc, onSnapshot, query, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDD2IL2ED87Flpuo2SmawPX15tImj7xmRc",
@@ -283,6 +384,15 @@
         const passwordInput = document.getElementById('passwordInput');
         const loginError = document.getElementById('loginError');
         const logoutBtn = document.getElementById('logoutBtn');
+
+        // Tabs
+        const tabProgramacionBtn = document.getElementById('tabProgramacionBtn');
+        const tabContactoBtn = document.getElementById('tabContactoBtn');
+        const tabProgramacion = document.getElementById('tabProgramacion');
+        const tabContacto = document.getElementById('tabContacto');
+
+        // Formulario Contacto
+        const contactForm = document.getElementById('contactForm');
         
         const addProgramForm = document.getElementById('addProgramForm');
         const dateTypeRadios = document.getElementsByName('dateType');
@@ -353,12 +463,27 @@
         cancelEditModalBtn.addEventListener('click', closeEditModal);
 
         // Escuchar cambios de autenticación
+        // Tab Navigation
+        tabProgramacionBtn.addEventListener('click', () => {
+            tabProgramacion.classList.remove('hidden');
+            tabContacto.classList.add('hidden');
+            tabProgramacionBtn.className = "px-4 py-3 border-b-2 border-brand font-bold text-white transition-colors";
+            tabContactoBtn.className = "px-4 py-3 border-b-2 border-transparent font-medium text-gray-400 hover:text-white transition-colors";
+        });
+        tabContactoBtn.addEventListener('click', () => {
+            tabContacto.classList.remove('hidden');
+            tabProgramacion.classList.add('hidden');
+            tabContactoBtn.className = "px-4 py-3 border-b-2 border-brand font-bold text-white transition-colors";
+            tabProgramacionBtn.className = "px-4 py-3 border-b-2 border-transparent font-medium text-gray-400 hover:text-white transition-colors";
+        });
+
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 // Login exitoso
                 loginSection.classList.add('hidden');
                 crudSection.classList.remove('hidden');
                 loadPrograms();
+                loadContactSettings();
             } else {
                 // No autenticado
                 loginSection.classList.remove('hidden');
@@ -593,6 +718,55 @@
             } catch (error) {
                 console.error("Error al actualizar: ", error);
                 alert("Error al actualizar el programa.");
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Cargar Contactos
+        async function loadContactSettings() {
+            try {
+                const contactDoc = await getDoc(doc(db, "settings", "contact"));
+                if (contactDoc.exists()) {
+                    const data = contactDoc.data();
+                    if(data.songRequest) { document.getElementById('songRequestInput').value = data.songRequest.value; document.getElementById('songRequestActive').checked = data.songRequest.active; }
+                    if(data.address) { document.getElementById('addressInput').value = data.address.value; document.getElementById('addressActive').checked = data.address.active; }
+                    if(data.phone) { document.getElementById('phoneInput').value = data.phone.value; document.getElementById('phoneActive').checked = data.phone.active; }
+                    if(data.email) { document.getElementById('emailInput').value = data.email.value; document.getElementById('emailActive').checked = data.email.active; }
+                    if(data.facebook) { document.getElementById('facebookInput').value = data.facebook.value; document.getElementById('facebookActive').checked = data.facebook.active; }
+                    if(data.instagram) { document.getElementById('instagramInput').value = data.instagram.value; document.getElementById('instagramActive').checked = data.instagram.active; }
+                    if(data.whatsapp) { document.getElementById('whatsappInput').value = data.whatsapp.value; document.getElementById('whatsappActive').checked = data.whatsapp.active; }
+                }
+            } catch (error) {
+                console.error("Error cargando configuración de contacto:", error);
+            }
+        }
+
+        // Guardar Contactos
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitBtn = document.getElementById('contactSubmitBtn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
+            submitBtn.disabled = true;
+
+            const contactData = {
+                songRequest: { value: document.getElementById('songRequestInput').value, active: document.getElementById('songRequestActive').checked },
+                address: { value: document.getElementById('addressInput').value, active: document.getElementById('addressActive').checked },
+                phone: { value: document.getElementById('phoneInput').value, active: document.getElementById('phoneActive').checked },
+                email: { value: document.getElementById('emailInput').value, active: document.getElementById('emailActive').checked },
+                facebook: { value: document.getElementById('facebookInput').value, active: document.getElementById('facebookActive').checked },
+                instagram: { value: document.getElementById('instagramInput').value, active: document.getElementById('instagramActive').checked },
+                whatsapp: { value: document.getElementById('whatsappInput').value, active: document.getElementById('whatsappActive').checked }
+            };
+
+            try {
+                await setDoc(doc(db, "settings", "contact"), contactData);
+                alert("Configuración de contacto guardada correctamente.");
+            } catch (error) {
+                console.error("Error guardando configuración:", error);
+                alert("Error al guardar la configuración.");
             } finally {
                 submitBtn.innerHTML = originalText;
                 submitBtn.disabled = false;
